@@ -1,15 +1,15 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "FastAPI",
-    "version": "0.1.0"
-  },
-  "servers": [
-    {
-      "url": "https://galaxium-booking-system.1xbq7f8yb8jb.us-south.codeengine.appdomain.cloud"
-    }
-  ],
-  "paths": {
+    "openapi":"3.0.3",
+    "info":{
+       "title":"FastAPI",
+       "version":"0.1.0"
+    },
+    "servers": [
+      {
+        "url": "https://galaxium-booking-system.1yhlyzca5607.us-south.codeengine.appdomain.cloud"
+      }
+    ],
+    "paths":{
     "/flights": {
       "get": {
         "summary": "List all available flights",
@@ -263,7 +263,11 @@
           }
         },
         "type": "object",
-        "required": ["user_id", "name", "flight_id"],
+        "required": [
+          "user_id",
+          "name",
+          "flight_id"
+        ],
         "title": "BookingIn"
       },
       "BookingOut": {
@@ -290,7 +294,13 @@
           }
         },
         "type": "object",
-        "required": ["booking_id", "user_id", "flight_id", "status", "booking_time"],
+        "required": [
+          "booking_id",
+          "user_id",
+          "flight_id",
+          "status",
+          "booking_time"
+        ],
         "title": "BookingOut"
       },
       "FlightOut": {
@@ -325,7 +335,15 @@
           }
         },
         "type": "object",
-        "required": ["flight_id", "origin", "destination", "departure_time", "arrival_time", "price", "seats_available"],
+        "required": [
+          "flight_id",
+          "origin",
+          "destination",
+          "departure_time",
+          "arrival_time",
+          "price",
+          "seats_available"
+        ],
         "title": "FlightOut"
       },
       "HTTPValidationError": {
@@ -353,7 +371,10 @@
           }
         },
         "type": "object",
-        "required": ["name", "email"],
+        "required": [
+          "name",
+          "email"
+        ],
         "title": "UserIn"
       },
       "UserOut": {
@@ -372,7 +393,11 @@
           }
         },
         "type": "object",
-        "required": ["user_id", "name", "email"],
+        "required": [
+          "user_id",
+          "name",
+          "email"
+        ],
         "title": "UserOut"
       },
       "ValidationError": {
@@ -380,8 +405,12 @@
           "loc": {
             "items": {
               "anyOf": [
-                {"type": "string"},
-                {"type": "integer"}
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
               ]
             },
             "type": "array",
@@ -397,9 +426,12 @@
           }
         },
         "type": "object",
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError"
       }
     }
-  }
-}
+  } }
