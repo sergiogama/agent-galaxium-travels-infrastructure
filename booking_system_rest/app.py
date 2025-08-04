@@ -62,9 +62,17 @@ def list_flights(db: Session = Depends(get_db)):
     "/book",
     response_model=BookingOut,
     summary="Book a flight for a user",
-    description="Book a seat on a specific flight for a user. Requires user_id, name, and flight_id in the request body. If the flight has available seats and the user_id matches the name, a new booking is created and the number of available seats is decremented by one. Returns the booking details."
+    description="Book a seat on a specific flight for a user. Requires user_id, name, and flight_id in the request body. If the flight has available seats and the user_id matches the name, a new booking is created and the number of available seats is decremented by one. Returns the booking details. If the user does not exist or placeholder data is provided, an error is returned."
 )
 def book_flight(booking: BookingIn, db: Session = Depends(get_db)):
+    # Verifica placeholders genéricos enviados pelo Agent
+    if booking.name.lower() in ["your name", "nome do usuário"] or booking.user_id <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="The user does not exist and must be registered before attempting to make a reservation."
+        )
+
+    # Verifica se voo existe
     flight = db.query(Flight).filter(Flight.flight_id == booking.flight_id).first()
     if not flight:
         raise HTTPException(status_code=404, detail="Flight not found")
@@ -72,7 +80,10 @@ def book_flight(booking: BookingIn, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="No seats available")
     user = db.query(User).filter(User.user_id == booking.user_id, User.name == booking.name).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found or name does not match user ID")
+        raise HTTPException(
+            status_code=400,
+            detail="The user does not exist and must be registered before attempting to make a reservation."
+        )
     # Decrement seat
     flight.seats_available -= 1
     new_booking = Booking(
