@@ -69,7 +69,7 @@ def book_flight(booking: BookingIn, db: Session = Depends(get_db)):
     if booking.name.lower() in ["your name", "nome do usuário"] or booking.user_id <= 0:
         raise HTTPException(
             status_code=400,
-            detail="The user does not exist and must be registered before attempting to make a reservation."
+            detail="The user does not exist and must be registered with name and e-mail."
         )
 
     # Verifica se voo existe
