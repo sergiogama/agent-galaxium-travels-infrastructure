@@ -154,3 +154,23 @@ def get_user_id(name: str, email: str, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user 
+
+@app.delete(
+    "/reset_users",
+    summary="Delete all users and their bookings",
+    description="Deletes all Bookings and Users from the database, keeping Flights intact.",
+    status_code=status.HTTP_200_OK,
+)
+def reset_users(db: Session = Depends(get_db)):
+    try:
+        # Apaga primeiro as reservas (FK com User)
+        db.query(Booking).delete()
+        # Apaga depois os usuários
+        db.query(User).delete()
+        db.commit()
+
+        return {"message": "All users and their bookings have been deleted successfully."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to reset users: {str(e)}")
+
